@@ -1,16 +1,20 @@
+# Credit to Sebastian Sauer's blog for this function
+# https://sebastiansauer.github.io/convert_logit2prob/
 logit2prob <- function(logit){
   odds <- exp(logit)
   prob <- odds / (1 + odds)
   return(prob)
 }
 
+# Function that reverses logit2prob
 prob2logit <- function(prob) {
   odds <- prob / (1 - prob)
   logit <- log(odds)
   return(logit)
 }
 
-
+#' Allow Cross-Origin Acess
+#' This code from plumber github
 #' @filter cors
 cors <- function(req, res) {
 
@@ -25,31 +29,6 @@ cors <- function(req, res) {
     plumber::forward()
   }
 
-}
-
-#' Echo the parameter that was sent in
-#' @param msg The message to echo back.
-#' @get /echo
-function(msg=""){
-  list(msg = paste0("The message is: '", msg, "'"))
-}
-
-#' Plot out data from the iris dataset
-#' @param spec If provided, filter the data to only this species (e.g. 'setosa')
-#' @get /plot
-#' @png
-function(spec){
-  myData <- iris
-  title <- "All Species"
-
-  # Filter if the species was specified
-  if (!missing(spec)){
-    title <- paste0("Only the '", spec, "' Species")
-    myData <- subset(iris, Species == spec)
-  }
-
-  plot(myData$Sepal.Length, myData$Petal.Length,
-       main=title, xlab="Sepal Length", ylab="Petal Length")
 }
 
 #' Return Logistic Regression Coefficients
